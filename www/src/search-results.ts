@@ -1,5 +1,16 @@
 import { renderBlock } from './lib.js'
 
+//Функция поиска принимает как аргумент переменную интерфейса SearchFormData, выводит полученный аргумент в консоль и ничего не возвращает. 
+//* Добавить в функцию search вторым аргументом функцию-обратного вызова, которая принимает либо ошибку либо массив результатов интерфейса Place. Данный интерфейс пока оставить пустым. Функция поиска делает задержку в несколько секунд, после чего с вероятностью 50 на 50 выдаёт либо ошибку либо пустой массив.
+
+export function searchFormProcessing (searchForm): void {
+  if (isNaN(searchForm.maxPrice) || searchForm.maxPrice <= 0) {
+    console.log('Not a number, zero or less then zero');
+  } else {
+    console.log(searchForm)
+  }
+}
+
 export function renderSearchStubBlock (): void {
   renderBlock(
     'search-results-block',
