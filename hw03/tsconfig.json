@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "strict": false,
+    "outDir": "public/scripts",
+    "target": "es2015",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "watch": true,
+    "inlineSourceMap": true,
+    "inlineSources": true
+  },
+  "files": [
+    "src/index.ts"
+  ]
+}
