@@ -1,13 +1,9 @@
-import { renderBlock } from './lib.js'
-import { SearchFormData } from './interfaces/searchformdata.js'
-import { searchFormProcessing } from './search-results.js'
-
-
-// Функция должна принимать дату въезда и дату выезда. 
-// При этом минимальная дата, которую можно выбрать это дата сегодняшнего дня, а максимальная дата - последний день следующего месяца. Будем считать это ограничениями сервиса. По умолчанию поля заполняются следующим образом. Дата въезда это следующий день от текущей даты. Дата выезда - плюс два дня от даты въезда.
+import { renderBlock } from './lib.js';
+import { SearchFormData } from './interfaces/searchformdata.js';
+import { searchFormProcessing } from './search-results.js';
 
 function tomorrow(): Date {
-  const tomorrow: Date = new Date;
+  const tomorrow: Date = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   return tomorrow;
 }
@@ -15,25 +11,29 @@ function tomorrow(): Date {
 function monthLater(): Date {
   const monthLaterDate: Date = new Date();
   monthLaterDate.setMonth(monthLaterDate.getMonth() + 1);
-  return monthLaterDate
+  return monthLaterDate;
 }
 
-function lastDayOfTheMonth(currentDate:Date): number {
-  return (new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0)).getDate();
+function lastDayOfTheMonth(currentDate: Date): number {
+  return new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth() + 1,
+    0
+  ).getDate();
 }
 
-function addZero(date:number):string {
-  let dateWithZero: string
+function addZero(date: number): string {
+  let dateWithZero: string;
   if (date < 10) {
     dateWithZero = `0${date}`;
   } else {
     dateWithZero = `${date}`;
   }
-  return dateWithZero
+  return dateWithZero;
 }
 
 function threeDaysLaterDate(arrivalDate: Date): Date {
-  const threeDaysLaterDate: Date = new Date;
+  const threeDaysLaterDate: Date = new Date();
   threeDaysLaterDate.setDate(arrivalDate.getDate() + 3);
   return threeDaysLaterDate;
 }
@@ -42,13 +42,23 @@ const currentDate: Date = new Date();
 const tomorrowDate: Date = tomorrow();
 const monthLaterDate: Date = monthLater();
 
-export function renderSearchFormBlock (arrivalDateInput: Date = tomorrowDate, departureDateInput: Date = threeDaysLaterDate(currentDate)): void {
+export function renderSearchFormBlock(
+  arrivalDateInput: Date = tomorrowDate,
+  departureDateInput: Date = threeDaysLaterDate(currentDate)
+): void {
+  const arrivalDateString = `${arrivalDateInput.getFullYear()}-${addZero(
+    arrivalDateInput.getMonth() + 1
+  )}-${addZero(arrivalDateInput.getDate())}`;
+  const arrivalDateStringMin = `${currentDate.getFullYear()}-${addZero(
+    currentDate.getMonth() + 1
+  )}-${addZero(currentDate.getDate())}`;
+  const arrivalDateStringMax = `${monthLaterDate.getFullYear()}-${addZero(
+    monthLaterDate.getMonth() + 1
+  )}-${lastDayOfTheMonth(monthLaterDate)}`;
 
-  const arrivalDateString = `${arrivalDateInput.getFullYear()}-${addZero(arrivalDateInput.getMonth() + 1)}-${addZero(arrivalDateInput.getDate())}`;
-  const arrivalDateStringMin = `${currentDate.getFullYear()}-${addZero(currentDate.getMonth() + 1)}-${addZero(currentDate.getDate())}`;
-  const arrivalDateStringMax = `${monthLaterDate.getFullYear()}-${addZero(monthLaterDate.getMonth() + 1)}-${lastDayOfTheMonth(monthLaterDate)}`;
-
-  const departureDateString = `${departureDateInput.getFullYear()}-${addZero(departureDateInput.getMonth() + 1)}-${addZero(departureDateInput.getDate())}`;
+  const departureDateString = `${departureDateInput.getFullYear()}-${addZero(
+    departureDateInput.getMonth() + 1
+  )}-${addZero(departureDateInput.getDate())}`;
   const departureDateStringMin = arrivalDateString;
   const departureDateStringMax = arrivalDateStringMax;
 
@@ -88,22 +98,27 @@ export function renderSearchFormBlock (arrivalDateInput: Date = tomorrowDate, de
       </fieldset>
     </form>
     `
-  )
+  );
 
-  const checkInInput = document.getElementById('check-in-date') as HTMLInputElement;
-  const checkOutInput = document.getElementById('check-out-date') as HTMLInputElement;
-  const maxPriceInput = document.getElementById('max-price') as HTMLInputElement;
+  const checkInInput = document.getElementById(
+    'check-in-date'
+  ) as HTMLInputElement;
+  const checkOutInput = document.getElementById(
+    'check-out-date'
+  ) as HTMLInputElement;
+  const maxPriceInput = document.getElementById(
+    'max-price'
+  ) as HTMLInputElement;
   const button = document.getElementById('findButton') as HTMLElement;
 
-  // Написать функцию-обработчик формы search, которая собирает заполненные пользователем данные в формате описанной структуры и передаёт их в функцию поиска. 
-  button.onclick = (ev:MouseEvent):void => {
+  button.onclick = (ev: MouseEvent): void => {
     ev.preventDefault();
     const searchForm: SearchFormData = {
       city: 'Санкт-Петербург',
       checkInDate: checkInInput.value,
       checkOutDate: checkOutInput.value,
-      maxPrice: +maxPriceInput.value
+      maxPrice: +maxPriceInput.value,
     };
     searchFormProcessing(searchForm);
-  }
+  };
 }

@@ -30,7 +30,7 @@ export function renderToast (message?: {text: string, type: string}, action?: {n
       if (action != null && action.handler != null) {
         action.handler()
       }
-      renderToast(null)
+      renderToast()
     }
   }
 }
